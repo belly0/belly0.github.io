@@ -9,3 +9,5 @@ hexo——简单、快速、强大的Node.js静态博客框架，请访问https:
 - hexo clean：清除了你之前生成的东西，也可以不加
 - hexo generate(或者简写:hexo g）
 - hexo deploy(或者简写:hexo d)：部署文章
+
+参考文档：https://blog.csdn.net/sunhwee/article/details/100109805#28__765
