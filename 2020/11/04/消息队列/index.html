@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>消息队列 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.什么是消息队列消息队列提供了一种从一个进程向另一个进程发送一个数据块的方法。  每个数据块都被认为含有一个类型，接收进程可以独立地接收含有不同类型的数据结构。我们可以通过发送消息来避免命名管道的同步和阻塞问题。但是消息队列与命名管道一样，每个数据块都有一个最大长度的限制。 Linux用宏MSGMAX和MSGMNB来限制一条消息的最大长度和一个队列的最大长度。 2.在Linux中使用消息队列Li">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列">
+<meta property="og:url" content="http://example.com/2020/11/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.什么是消息队列消息队列提供了一种从一个进程向另一个进程发送一个数据块的方法。  每个数据块都被认为含有一个类型，接收进程可以独立地接收含有不同类型的数据结构。我们可以通过发送消息来避免命名管道的同步和阻塞问题。但是消息队列与命名管道一样，每个数据块都有一个最大长度的限制。 Linux用宏MSGMAX和MSGMNB来限制一条消息的最大长度和一个队列的最大长度。 2.在Linux中使用消息队列Li">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-04T01:46:31.000Z">
+<meta property="article:modified_time" content="2020-11-04T01:54:02.788Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-消息队列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="article-date">
+  <time datetime="2020-11-04T01:46:31.000Z" itemprop="datePublished">2020-11-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      消息队列
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-什么是消息队列"><a href="#1-什么是消息队列" class="headerlink" title="1.什么是消息队列"></a>1.什么是消息队列</h1><p>消息队列提供了一种从一个进程向另一个进程发送一个数据块的方法。  每个数据块都被认为含有一个类型，接收进程可以独立地接收含有不同类型的数据结构。我们可以通过发送消息来避免命名管道的同步和阻塞问题。但是消息队列与命名管道一样，每个数据块都有一个最大长度的限制。</p>
+<p>Linux用宏MSGMAX和MSGMNB来限制一条消息的最大长度和一个队列的最大长度。</p>
+<h1 id="2-在Linux中使用消息队列"><a href="#2-在Linux中使用消息队列" class="headerlink" title="2.在Linux中使用消息队列"></a>2.在Linux中使用消息队列</h1><p>Linux提供了一系列消息队列的函数接口来让我们方便地使用它来实现进程间的通信。它的用法与其他两个System V PIC机制，即信号量和共享内存相似。</p>
+<h2 id="①msgget-函数"><a href="#①msgget-函数" class="headerlink" title="①msgget()函数"></a>①msgget()函数</h2><p>该函数用来创建和访问一个消息队列。它的原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msgget</span><span class="params">(<span class="keyword">key_t</span>, key, <span class="keyword">int</span> msgflg)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>与其他的IPC机制一样，程序必须提供一个键来命名某个特定的消息队列。msgflg是一个权限标志，表示消息队列的访问权限，它与文件的访问权限一样。msgflg可以与IPC_CREAT做或操作，表示当key所命名的消息队列不存在时创建一个消息队列，如果key所命名的消息队列存在时，IPC_CREAT标志会被忽略，而只返回一个标识符。</p>
+<p>它返回一个以key命名的消息队列的标识符（非零整数），失败时返回-1.</p>
+<h2 id="②msgsnd-函数"><a href="#②msgsnd-函数" class="headerlink" title="②msgsnd()函数"></a>②msgsnd()函数</h2><p>该函数用来把消息添加到消息队列中。它的原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msgsend</span><span class="params">(<span class="keyword">int</span> msgid, <span class="keyword">const</span> <span class="keyword">void</span> *msg_ptr, <span class="keyword">size_t</span> msg_sz, <span class="keyword">int</span> msgflg)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>msgid是由msgget函数返回的消息队列标识符。</p>
+<p>msg_ptr是一个指向准备发送消息的指针，但是消息的数据结构却有一定的要求，指针msg_ptr所指向的消息结构一定要是以一个长整型成员变量开始的结构体，接收函数将用这个成员来确定消息的类型。所以消息结构要定义成这样： </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">my_message</span> &#123;</span></span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">int</span> message_type;</span><br><span class="line">    <span class="comment">/* The data you wish to transfer */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>msg_sz 是msg_ptr指向的消息的长度，注意是消息的长度，而不是整个结构体的长度，也就是说msg_sz是不包括长整型消息类型成员变量的长度。</p>
+<p>msgflg 用于控制当前消息队列满或队列消息到达系统范围的限制时将要发生的事情。</p>
+<p>如果调用成功，消息数据的一分副本将被放到消息队列中，并返回0，失败时返回-1.</p>
+<h2 id="③msgrcv-函数"><a href="#③msgrcv-函数" class="headerlink" title="③msgrcv()函数"></a>③msgrcv()函数</h2><p>该函数用来从一个消息队列获取消息，它的原型为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msgrcv</span><span class="params">(<span class="keyword">int</span> msgid, <span class="keyword">void</span> *msg_ptr, <span class="keyword">size_t</span> msg_st, <span class="keyword">long</span> <span class="keyword">int</span> msgtype, <span class="keyword">int</span> msgflg)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>msgid, msg_ptr, msg_st 的作用也函数msgsnd()函数的一样。</p>
+<p>msgtype 可以实现一种简单的接收优先级。如果msgtype为0，就获取队列中的第一个消息。如果它的值大于零，将获取具有相同消息类型的第一个信息。如果它小于零，就获取类型等于或小于msgtype的绝对值的第一个消息。</p>
+<p>msgflg 用于控制当队列中没有相应类型的消息可以接收时将发生的事情。</p>
+<p>调用成功时，该函数返回放到接收缓存区中的字节数，消息被复制到由msg_ptr指向的用户分配的缓存区中，然后删除消息队列中的对应消息。失败时返回-1。</p>
+<h2 id="④msgctl-函数"><a href="#④msgctl-函数" class="headerlink" title="④msgctl()函数"></a>④msgctl()函数</h2><p>该函数用来控制消息队列，它与共享内存的shmctl函数相似，它的原型为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msgctl</span><span class="params">(<span class="keyword">int</span> msgid, <span class="keyword">int</span> command, struct msgid_ds *buf)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>command是将要采取的动作，它可以取3个值，</p>
+<ul>
+<li><p>IPC_STAT：把msgid_ds结构中的数据设置为消息队列的当前关联值，即用消息队列的当前关联值覆盖msgid_ds的值。</p>
+</li>
+<li><p>IPC_SET：如果进程有足够的权限，就把消息列队的当前关联值设置为msgid_ds结构中给出的值</p>
+</li>
+<li><p>IPC_RMID：删除消息队列</p>
+<p>buf是指向msgid_ds结构的指针，它指向消息队列模式和访问权限的结构。msgid_ds结构至少包括以下成员： </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">msgid_ds</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">uid_t</span> shm_perm.uid;</span><br><span class="line">    <span class="keyword">uid_t</span> shm_perm.gid;</span><br><span class="line">    <span class="keyword">mode_t</span> shm_perm.mode;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>成功时返回0，失败时返回-1.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/11/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" data-id="ckh2tntee00002kuq1l3ehva2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/11/04/JavaScript%E4%B8%AD%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript中原型和原型链</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/04/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/04/JavaScript%E4%B8%AD%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/">JavaScript中原型和原型链</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/03/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
