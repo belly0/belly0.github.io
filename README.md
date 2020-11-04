@@ -2,7 +2,7 @@
 
 ## 图片资源正常显示：
 
-- source/_posts/添加images文件夹
+- source/添加images文件夹
 
 - hexo g  # 生成静态文件后public下会自动生成images文件夹
 
